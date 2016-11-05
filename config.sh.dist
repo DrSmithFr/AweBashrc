@@ -1,0 +1,3 @@
+# Configuration bashrc
+EDITOR="nano"
+EXPLORER="nemo"
