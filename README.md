@@ -3,6 +3,9 @@ AweBash - Amplified Bashrc
 
 Installation (Recommended)
 --------------------------
+
+In order to use auto-install, you will need git on your computer
+
  - Download AweBash 
  - Decompress AweBash where you want
  - Execute the following command:
