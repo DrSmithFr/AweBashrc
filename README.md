@@ -29,8 +29,8 @@ Manual installation can be achieved without **git** on your computer.
  - Copy /config.sh.dist to /config.sh
  - Edit /config.sh as you want
 
-_Optional:_ Install recommended plugins
----------------------------------------
+_Optional:_ Manual installation of recommended plugins
+------------------------------------------------------
 
 Manual installation can be achieved with or without **git** on your computer.
 
