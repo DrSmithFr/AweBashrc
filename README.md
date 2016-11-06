@@ -14,20 +14,20 @@ Installation (Recommended)
     
 Manual installation
 -------------------
- > Download AweBash 
- > Decompress AweBash where you want
- > Add this line to your .bashrc or .profile
+ 1- Download AweBash 
+ 2- Decompress AweBash where you want
+ 3- Add this line to your .bashrc or .profile
 
     . {installation_folder}/Awe.sh
 
- > Copy /config.sh.dist to /config.sh
- > Edit /config.sh as you want
+ 4- Copy /config.sh.dist to /config.sh
+ 5- Edit /config.sh as you want
 
 _Optional:_ Install recommended plugins
 ---------------------------------------
- > Download the AweBash plugin
- > Create a folder with the plugin name in /plugins
- > Decompress AweBash plugin within the folder
+ 1- Download the AweBash plugin
+ 2- Create a folder with the plugin name in /plugins
+ 3- Decompress AweBash plugin within the folder
 
 Recommended plugins list
 ------------------------
