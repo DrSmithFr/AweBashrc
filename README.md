@@ -3,14 +3,14 @@ AweBash - Amplified Bashrc
 
 Installation (Recommended)
 --------------------------
- > Download AweBash 
- > Decompress AweBash where you want
- > Execute the following command:
+ 1- Download AweBash 
+ 2- Decompress AweBash where you want
+ 3- Execute the following command:
 
     chmod +x install.sh && ./install.sh
     
- > Copy /config.sh.dist to /config.sh
- > Edit /config.sh as you want
+ 4- Copy /config.sh.dist to /config.sh
+ 5- Edit /config.sh as you want
     
 Manual installation
 -------------------
