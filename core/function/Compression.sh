@@ -21,13 +21,3 @@ function extract()      # Handy Extract Program
         echo "'$1' is not a valid file!"
     fi
 }
-
-# Creates an archive (*.tar.gz) from given directory.
-function maketar() {
-    tar cvzf "${1%%/}.tar.gz"  "${1%%/}/";
-}
-
-# Create a ZIP archive of a file or folder.
-function makezip() {
-    zip -r "${1%%/}.zip" "$1" ;
-}
