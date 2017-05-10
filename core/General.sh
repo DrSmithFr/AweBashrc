@@ -100,3 +100,5 @@ function sudo()
         command sudo "$@"
     fi
 }
+
+alias certif="php /home/john/Programmes/certificationy-cli/certificationy.php start"
