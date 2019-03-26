@@ -33,7 +33,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 #Les indispensables
-alias o="nohup $EXPLORER $(pwd) 2>/dev/null"
+alias o="nemo . 2>/dev/null"
 alias c='clear'
 alias r='reset'
 alias t='time'
@@ -100,5 +100,3 @@ function sudo()
         command sudo "$@"
     fi
 }
-
-alias certif="php /home/john/Programmes/certificationy-cli/certificationy.php start"
