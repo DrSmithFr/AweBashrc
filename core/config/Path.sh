@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ "$UID" -eq 0 ]; then
-    PATH=$PATH:/usr/local:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/cuda-8.0/bin
+    PATH=$PATH:/usr/local:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/cuda-8.0/bin:$HOME/.cargo/env
 fi
 
 # remove duplicate path entries
