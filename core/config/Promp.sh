@@ -23,7 +23,7 @@ else
     PS1="\[${BRed}\]┌─\[${NC}\]"
     PS1+="[\t] "
     PS1+="\[${BRed}\]\u\[${NC}\]@\[${NC}\]\h\[${NC}\] "
-    PS1+="(\[${BRed}\]\w\[${NC}\])"
+    PS1+="(\[${BOrange}\]\w\[${NC}\])"
 
     # affichage repo-git
     PS1+='$(__git_ps1 " '
