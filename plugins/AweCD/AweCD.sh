@@ -5,8 +5,18 @@ AWE_EXT_AWECD="$AWE_PLUGIN_CURRENT_CACHE_FOLDER/$USER"
 
 if [ ! -d "$AWE_EXT_AWECD" ]
 then
-    mkdir "$AWE_EXT_AWECD"
+    mkdir -p "$AWE_EXT_AWECD"
 fi
+
+function bash_save_last_pwd()
+{
+    if [[ -f "$AWE_EXT_AWECD/.lastdir" ]]
+    then
+        rm -f "$AWE_EXT_AWECD/.lastdir"
+    fi
+
+    pwd > "$AWE_EXT_AWECD/.lastdir"
+}
 
 ##############################################################
 ########################### USAGE ############################
@@ -14,11 +24,20 @@ fi
 opt=$1
 shift
 case $opt in
+    --restore|-r)
+            lastdir="$(cat $AWE_EXT_AWECD/.lastdir)">/dev/null 2>&1
+            if [ -d "$lastdir" ]; then
+                command cd "$lastdir"
+                export PWD=$(pwd);
+            else
+                echo -e "bash: cd: nothing to restore"
+            fi
+    ;;
     --save|-s)
         if [ -z "$1" ]
-	    then
-	        echo "Usage: rd [Nom_du_favoris]"
-	    else
+        then
+            echo "Usage: rd [Nom_du_favoris]"
+        else
             pwd > "$AWE_EXT_AWECD/.lastdir_$1"
         fi
     ;;
@@ -29,6 +48,7 @@ case $opt in
             if [ -d "$lastdir" ]; then
                 command cd "$lastdir"
                 export PWD=$(pwd);
+                bash_save_last_pwd
             else
                 echo -e "bash: cd: $1: Aucun favoris de ce type"
             fi
@@ -43,11 +63,13 @@ case $opt in
         then
             command cd "$HOME" && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
             export PWD=$(pwd);
+            bash_save_last_pwd
         else
             if [ -d "$opt" ]
             then
                 command cd $opt && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
                 export PWD=$(pwd);
+                bash_save_last_pwd
             else
                 if [ -f "$AWE_EXT_AWECD/.lastdir_$opt" ]
                 then
@@ -55,6 +77,7 @@ case $opt in
                     if [ -d "$lastdir" ]; then
                         command cd "$lastdir" && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
                         export PWD=$(pwd);
+                        bash_save_last_pwd
                     else
                         echo "bash: cd: $opt: Aucun fichier, dossier ou favoris de ce type"
                     fi

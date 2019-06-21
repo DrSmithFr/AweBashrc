@@ -113,3 +113,9 @@ do
 done
 
 if awe_debug; then echo -e " Ultimate BashRc ${On_Green}${BRed}FULLY LOADED${NC}\n"; fi
+
+# restoring previous PWD
+if [[ "$(pwd)" == "$(realpath ~)" ]]
+then
+    cd -r
+fi

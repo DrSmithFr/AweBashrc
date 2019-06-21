@@ -18,7 +18,7 @@ alias grm='git rm'
 
 # Loading git custom command
 if [ -f "$AWE_PLUGIN_CURRENT_FOLDER/AweGit.sh" ]; then
-    alias git="$AWE_PLUGIN_CURRENT_FOLDER/AweGit.sh"
+    alias got="$AWE_PLUGIN_CURRENT_FOLDER/AweGit.sh"
     export AWE_EXT_AWEGIT_LOG_FILE="$AWE_PLUGIN_CURRENT_CACHE_FOLDER/branch_history_$(date +"%m_%d_%Y").log"
 else
     echo "AweGit ERROR: incorrect alias for better git"
