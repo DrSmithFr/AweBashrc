@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# misspell helper
+alias gti=git
+alias gto=git
+alias got=git
+
 # Git related
 alias gs='git status'
 alias gc='git commit'

@@ -211,5 +211,3 @@ case $opt in
     *)          command git ${opt} $@                                 ;;
 esac
 
-
-

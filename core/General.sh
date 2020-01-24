@@ -100,3 +100,22 @@ function sudo()
         command sudo "$@"
     fi
 }
+
+# git survey
+function git_contrib_total()
+{
+  for author in $(command git log --all --no-merges --format="%ae" | sort | uniq); do
+    echo "$author:"
+    command git log --all --no-merges --shortstat --author="$author" | grep -E "fil(e|es) changed" | awk '{files+=$1; inserted+=$4; deleted+=$6} END {print "files changed: ", files, "\nlines inserted: ", inserted, "\nlines deleted: ", deleted }'
+    echo ""
+  done
+}
+
+function git_contrib_since()
+{
+  for author in $(command git log --all --no-merges --format="%ae" --since="$1" | sort | uniq); do
+    echo "$author:"
+    command git log --all --no-merges --shortstat --author="$author" --since="$1" | grep -E "fil(e|es) changed" | awk '{files+=$1; inserted+=$4; deleted+=$6} END {print "files changed: ", files, "\nlines inserted: ", inserted, "\nlines deleted: ", deleted }'
+    echo ""
+  done
+}
