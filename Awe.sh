@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# enforce ssh agent
+eval "$(ssh-agent -s)" && ssh-add ~/.ssh/id_rsa
+
 export AWE_INSTALL_FOLDER="$( command cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$AWE_INSTALL_FOLDER/config.sh"
 
