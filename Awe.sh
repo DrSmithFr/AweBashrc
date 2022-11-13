@@ -54,7 +54,7 @@ XLOAD=$(( 400*${NCPU} ))                    # Xlarge load
 # history
 if [ ! -d "$AWE_INSTALL_FOLDER/cache/bash_history" ]
 then
-    mkdir "$AWE_INSTALL_FOLDER/cache/bash_history"
+    mkdir -p "$AWE_INSTALL_FOLDER/cache/bash_history"
 fi
 
 if [ ! -f "$AWE_INSTALL_FOLDER/cache/bash_history/$USER.log" ]
