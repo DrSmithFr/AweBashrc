@@ -1,4 +1,5 @@
 # Symfony
+alias console="symfony console"
 
 #alias composer="symfony composer"
 #Removing politics from the composer.
