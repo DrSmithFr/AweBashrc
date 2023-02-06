@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
-# Auto select cd or cdnvm if nvm is installed
 cdwrapper() {
-    if ! command -v nvm &> /dev/null
-    then
+    # Auto select cd or cdnvm if nvm is installed
+    if ! command -v nvm &> /dev/null; then
         command cd "$@"
     else
         cdnvm "$@"
+    fi
+
+    if [[ -d "$PWD/.git" ]]; then
+        # Force git branch history
+        git co --log
     fi
 }
 
@@ -105,10 +109,10 @@ case $opt in
                 export PWD=$(pwd);
                 bash_save_last_pwd
             else
-                echo -e "bash: cd: $1: Aucun favoris de ce type"
+                echo -e "bash: AweCD: $1: Aucun alias de ce type"
             fi
         else
-            echo -e "bash: cd: $1: Aucun favoris de ce type"
+            echo -e "bash: AweCD: $1: Aucun alias de ce type"
             exit 1
         fi
     ;;
@@ -130,19 +134,17 @@ case $opt in
                 then
                     lastdir="$(cat $AWE_EXT_AWECD/.lastdir_$opt)">/dev/null 2>&1
                     if [ -d "$lastdir" ]; then
+                        echo -e "Using AweCD alias '$opt' to '$lastdir'"
                         cdwrapper "$lastdir" && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
                         export PWD=$(pwd);
                         bash_save_last_pwd
                     else
-                        echo "bash: cd: $opt: Aucun fichier, dossier ou favoris de ce type"
+                        echo "bash: cd: $opt: Aucun fichier, dossier ou alias de ce type"
                     fi
                 else
-                    echo "bash: cd: $opt: Aucun fichier, dossier ou favoris de ce type"
+                    echo "bash: cd: $opt: Aucun fichier, dossier ou alias de ce type"
                 fi
             fi
         fi
     ;;
 esac
-
-
-

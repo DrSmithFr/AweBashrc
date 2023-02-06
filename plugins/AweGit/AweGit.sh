@@ -107,6 +107,7 @@ function git_log_branch_history()
 
 function git_read_branch_history()
 {
+    echo -e "History of branch changes for $(git config --get remote.origin.url | awk -F ":" '{print $2}')"
     while read line
     do
         branchDate=$(echo "$line"|cut -f1)
@@ -115,8 +116,39 @@ function git_read_branch_history()
         spendTime=$(($(date "+%s") - $(date -d "$branchDate $branchTime" "+%s")))
         showTime=$(displaytime spendTime)
 
-        printf " - %-40s %s\n" "$branch_name" "$showTime"
+        printf " - %-40s %s\n" "$branch_name" "$showTime ago"
     done < "$(git_get_repo_log_file)"
+}
+
+function git_time_on_branch_history()
+{
+    echo -e "History of time spendTime by branch for $(git config --get remote.origin.url | awk -F ":" '{print $2}')"
+    count=0
+    while read line
+    do
+        branchDate=$(echo "$line"|cut -f1)
+        branchTime=$(echo "$line"|cut -f2)
+        branch_name=$(echo "$line"|cut -f3)
+
+        if [[ $count -ne 0 ]]
+        then
+            spendTime=$(($(date -d "$branchDate $branchTime" "+%s") - $(date -d "$lastBranchDate $lastBranchTime" "+%s")))
+            showTime=$(displaytime spendTime)
+
+            printf " - %-40s %s\n" "$lastBranchName" "$showTime"
+        fi
+
+        lastBranchDate=$branchDate
+        lastBranchTime=$branchTime
+        lastBranchName=$branch_name
+
+        ((count++))
+    done < "$(git_get_repo_log_file)"
+
+    spendTime=$(($(date "+%s") - $(date -d "$branchDate $branchTime" "+%s")))
+    showTime=$(displaytime spendTime)
+
+    printf " - %-40s %s\n" "$branch_name" "$showTime"
 }
 
 function displaytime {
@@ -127,10 +159,10 @@ function displaytime {
     local M=$((T/60%60))
     local S=$((T%60))
 
-    [[ $D > 0 ]] && echo "~ $D days ago" && exit 0
-    [[ $H > 0 ]] && echo "~ $H hours ago" && exit 0
-    [[ $M > 0 ]] && echo "~ $M minutes ago" && exit 0
-    [[ $D < 0 || $H < 0 || $M < 0 ]] && echo "$S seconds ago" && exit 0
+    [[ $D > 0 ]] && echo "~ $D days" && exit 0
+    [[ $H > 0 ]] && echo "~ $H hours" && exit 0
+    [[ $M > 0 ]] && echo "~ $M minutes" && exit 0
+    [[ $D < 0 || $H < 0 || $M < 0 ]] && echo "$S seconds" && exit 0
 }
 
 ##############################################################
@@ -154,10 +186,11 @@ case $opt in
         shift
         case $opt in
             -b)   command git checkout -b $@ && git push -u origin $(git rev-parse --abbrev-ref HEAD) --no-verify ;;
-            ".")  command git checkout . && git_log_branch_history                                    ;;
-            "-")  command git checkout - && git_log_branch_history                                    ;;
-            -h)   git_read_branch_history                                                             ;;
-            -l)   git_log_branch_history                                                              ;;
+            ".")  command git checkout . ; git_log_branch_history                                                ;;
+            "-")  command git checkout - ; git_log_branch_history                                                ;;
+            -h|--history)   git_read_branch_history                                                               ;;
+            -t|--time-branch-history)   git_time_on_branch_history                                                ;;
+            -l|--log)   git_log_branch_history                                                                    ;;
             *)
                 if [ -f "$opt" ]
                 then
