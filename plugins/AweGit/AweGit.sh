@@ -86,6 +86,12 @@ function git_get_repo_log_file() {
     echo "$log_file"
 }
 
+function git_log_branch_clear() {
+    log_file=$(git_get_repo_log_file)
+    rm -f "$log_file"
+    git_log_branch_history
+}
+
 function git_log_branch_history()
 {
     currentDate=$(date +"%Y-%m-%d")
@@ -97,9 +103,10 @@ function git_log_branch_history()
 
     log_file=$(git_get_repo_log_file)
 
+    last_date=$(tail -n1 <$log_file | cut -f1)
     last_branch_name=$(tail -n1 <$log_file | cut -f3)
 
-    if [[ "$branch_name" != "$last_branch_name" ]]
+    if [[ "$last_date" != "$currentDate" || "$branch_name" != "$last_branch_name" ]]
     then
         echo -e "${currentDate}\t${currentTime}\t${branch_name}" >> "$log_file"
     fi
@@ -162,7 +169,7 @@ function displaytime {
     [[ $D > 0 ]] && echo "~ $D days" && exit 0
     [[ $H > 0 ]] && echo "~ $H hours" && exit 0
     [[ $M > 0 ]] && echo "~ $M minutes" && exit 0
-    [[ $D < 0 || $H < 0 || $M < 0 ]] && echo "$S seconds" && exit 0
+    echo "$S seconds" && exit 0
 }
 
 ##############################################################
@@ -181,16 +188,28 @@ case $opt in
     up)         command git push -u origin $(git rev-parse --abbrev-ref HEAD) ;;
     ci)         command git commit "$@"                                       ;;
     commit)     command git commit "$@"                                       ;;
+    branch)
+        opt=$1
+        shift
+        case $opt in
+            -h|--history)               git_read_branch_history    ;;
+            -t|--time-history)          git_time_on_branch_history ;;
+            -l|--log)                   git_log_branch_history     ;;
+            -c|--clear)                 git_log_branch_clear       ;;
+            *)                          command git branch $opt    ;;
+        esac
+        ;;
     checkout|co)
         opt=$1
         shift
         case $opt in
             -b)   command git checkout -b $@ && git push -u origin $(git rev-parse --abbrev-ref HEAD) --no-verify ;;
-            ".")  command git checkout . ; git_log_branch_history                                                ;;
-            "-")  command git checkout - ; git_log_branch_history                                                ;;
-            -h|--history)   git_read_branch_history                                                               ;;
-            -t|--time-branch-history)   git_time_on_branch_history                                                ;;
-            -l|--log)   git_log_branch_history                                                                    ;;
+            ".")  command git checkout . ; git_log_branch_history                                                 ;;
+            "-")  command git checkout - ; git_log_branch_history                                                 ;;
+            -h|--history)               git_read_branch_history                                                   ;;
+            -t|--time-history)          git_time_on_branch_history                                                ;;
+            -l|--log)                   git_log_branch_history                                                    ;;
+            -c|--clear)                 git_log_branch_clear                                                      ;;
             *)
                 if [ -f "$opt" ]
                 then
