@@ -55,7 +55,6 @@ function git_file_diff_lg()
     fi
 }
 
-
 function git_file_diff()
 {
     for hash in $@
@@ -69,46 +68,55 @@ function git_file_diff()
     done
 }
 
+function git_get_repo_log_file() {
+    repo_name=$(git config --get remote.origin.url | awk -F ":" '{print $2}'| tr / _).log
+
+    if [[ ! -d "$AWE_EXT_AWEGIT_LOG_DIR" ]]
+    then
+        mkdir -p "$AWE_EXT_AWEGIT_LOG_DIR" &> /dev/null
+    fi
+
+    log_file="$AWE_EXT_AWEGIT_LOG_DIR/$repo_name"
+
+    if [[ ! -f "$log_file" ]]
+    then
+        touch "$log_file" &> /dev/null
+    fi
+
+    echo "$log_file"
+}
+
 function git_log_branch_history()
 {
-    currentTime=$(date +"%T")
     currentDate=$(date +"%Y-%m-%d")
+    currentTime=$(date +"%T")
 
     branch_name=$(git symbolic-ref -q HEAD)
     branch_name=${branch_name##refs/heads/}
     branch_name=${branch_name:-HEAD}
-    repo_name=$(basename `git rev-parse --show-toplevel`)
 
-    if [[ ! -f $AWE_EXT_AWEGIT_LOG_FILE ]]
-    then
-        touch $AWE_EXT_AWEGIT_LOG_FILE
-    fi
+    log_file=$(git_get_repo_log_file)
 
-    last_branch_name=$(tail -n1 <$AWE_EXT_AWEGIT_LOG_FILE | cut -f2)
+    last_branch_name=$(tail -n1 <$log_file | cut -f3)
 
     if [[ "$branch_name" != "$last_branch_name" ]]
     then
-        echo -e "${currentTime}\t${repo_name}\t${branch_name}" >> $AWE_EXT_AWEGIT_LOG_FILE
+        echo -e "${currentDate}\t${currentTime}\t${branch_name}" >> "$log_file"
     fi
 }
 
 function git_read_branch_history()
 {
-    currentDate=$(date +"%Y-%m-%d")
-
     while read line
     do
-        branchTime=$(echo "$line"|cut -f1)
-        repo_name=$(echo "$line"|cut -f2)
+        branchDate=$(echo "$line"|cut -f1)
+        branchTime=$(echo "$line"|cut -f2)
         branch_name=$(echo "$line"|cut -f3)
-        spendTime=$(($(date "+%s") - $(date -d "$currentDate $branchTime" "+%s")))
+        spendTime=$(($(date "+%s") - $(date -d "$branchDate $branchTime" "+%s")))
         showTime=$(displaytime spendTime)
 
-        if [[ "$repo_name" == "$(basename `git rev-parse --show-toplevel`)" ]]
-        then
-            printf " - %-40s %s\n" "$branch_name" "$showTime"
-        fi
-    done < $AWE_EXT_AWEGIT_LOG_FILE
+        printf " - %-40s %s\n" "$branch_name" "$showTime"
+    done < "$(git_get_repo_log_file)"
 }
 
 function displaytime {

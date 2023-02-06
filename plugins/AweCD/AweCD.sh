@@ -93,6 +93,7 @@ case $opt in
             echo "Usage: rd [Nom_du_favoris]"
         else
             pwd > "$AWE_EXT_AWECD/.lastdir_$1"
+            echo "Saved '$1' as cd alias to '$(pwd)'"
         fi
     ;;
     --load|-lo)
