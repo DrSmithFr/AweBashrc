@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+# Auto select cd or cdnvm if nvm is installed
+cdwrapper() {
+    if ! command -v nvm &> /dev/null
+    then
+        command cd "$@"
+    else
+        cdnvm "$@"
+    fi
+}
 
 # Adding nvm
 cdnvm() {
@@ -72,7 +81,7 @@ case $opt in
     --restore|-r)
             lastdir="$(cat $AWE_EXT_AWECD/.lastdir)">/dev/null 2>&1
             if [ -d "$lastdir" ]; then
-                cdnvm "$lastdir"
+                cdwrapper "$lastdir"
                 export PWD=$(pwd);
             else
                 echo -e "bash: cd: nothing to restore"
@@ -91,7 +100,7 @@ case $opt in
         then
             lastdir="$(cat $AWE_EXT_AWECD/.lastdir_$opt)">/dev/null 2>&1
             if [ -d "$lastdir" ]; then
-                cdnvm "$lastdir"
+                cdwrapper "$lastdir"
                 export PWD=$(pwd);
                 bash_save_last_pwd
             else
@@ -106,13 +115,13 @@ case $opt in
     *)
         if [ -z "$opt" ]
         then
-            cdnvm "$HOME" && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
+            cdwrapper "$HOME" && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
             export PWD=$(pwd);
             bash_save_last_pwd
         else
             if [ -d "$opt" ]
             then
-                cdnvm $opt && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
+                cdwrapper $opt && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
                 export PWD=$(pwd);
                 bash_save_last_pwd
             else
@@ -120,7 +129,7 @@ case $opt in
                 then
                     lastdir="$(cat $AWE_EXT_AWECD/.lastdir_$opt)">/dev/null 2>&1
                     if [ -d "$lastdir" ]; then
-                        cdnvm "$lastdir" && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
+                        cdwrapper "$lastdir" && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
                         export PWD=$(pwd);
                         bash_save_last_pwd
                     else
