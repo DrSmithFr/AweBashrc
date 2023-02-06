@@ -180,11 +180,11 @@ shift
 
 case $opt in
     diff)
-        command git diff $@
+        command git diff "$@"
     ;;
     master)     command git checkout master && git fetch && git pull          ;;
-    search)     command git branch -r | grep --color=auto $@                  ;;
-    lgdiff)     git_file_diff_lg $@                                           ;;
+    search)     command git branch -r | grep --color=auto "$@"                ;;
+    lgdiff)     git_file_diff_lg "$@"                                         ;;
     up)         command git push -u origin $(git rev-parse --abbrev-ref HEAD) ;;
     ci)         command git commit "$@"                                       ;;
     commit)     command git commit "$@"                                       ;;
@@ -203,7 +203,7 @@ case $opt in
         opt=$1
         shift
         case $opt in
-            -b)   command git checkout -b $@ && git push -u origin $(git rev-parse --abbrev-ref HEAD) --no-verify ;;
+            -b)   command git checkout -b "$@" && git push -u origin $(git rev-parse --abbrev-ref HEAD) --no-verify ;;
             ".")  command git checkout . ; git_log_branch_history                                                 ;;
             "-")  command git checkout - ; git_log_branch_history                                                 ;;
             -h|--history)               git_read_branch_history                                                   ;;
@@ -251,23 +251,23 @@ case $opt in
         shift
         case $opt in
             pop|load|drop|show|apply)
-                    nbStash=$(git stash list | grep --color=auto $@ | cut -d':' -f1 | wc -l)
+                    nbStash=$(git stash list | grep --color=auto "$@" | cut -d':' -f1 | wc -l)
                     if [ "1" == "$nbStash" ]
                     then
-                        stash=$(git stash list | grep --color=auto $@ | cut -d':' -f1)
+                        stash=$(git stash list | grep --color=auto "$@" | cut -d':' -f1)
                         command git stash $opt $stash
                     else
                         echo "ERROR: 'git stash $opt $@' impossible ! Il y a $nbStash stash qui contienne '$@':"
                         command git stash list | grep $@
                     fi
                 ;;
-            search) command git stash list | grep --color=auto $@;;
-            save)   command git stash save $@                    ;;
-            clear)  command git stash clear $@                   ;;
-            *)      command git stash list $@                    ;;
+            search) command git stash list | grep --color=auto "$@";;
+            save)   command git stash save "$@"                    ;;
+            clear)  command git stash clear "$@"                   ;;
+            *)      command git stash list "$@"                    ;;
         esac
     ;;
     pull)       command git fetch && git pull                         ;;
-    *)          command git ${opt} $@                                 ;;
+    *)          command git ${opt} "$@"                               ;;
 esac
 

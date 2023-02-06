@@ -1,28 +1,12 @@
-AweBash Plugin AweSystemInfo - Amplified cd command
-===================================================
-
-Install AweBash here : https://github.com/MrSmith777/AweBash
-
-Installation
-------------
-
-installation can be achieved with or without **git** on your computer.
-
-with **git**:
- - Clone the plugin project inside /plugins of AweBash installation folder
-
-without **git**:
- - Download the AweBash plugin
- - Create a folder with the plugin name in /plugins of AweBash installation folder
- - Decompress AweBash plugin within the folder
+AweBash Plugin AweSystemInfo
+============================
  
 Plugin Content
 --------------
 
-    info_start
-    
-Display some system informations
-
-    ii
-    
-Display even more informations
+- `my_ip_public` : Get your public IP address
+- `my_ip_local` : Get your local IP address
+- `load` : Return the current load of the system in percentage
+- `load_color` : Return the current load of the system in percentage
+- `info_start` : Display some system informations
+- `ii` : Display even more informations

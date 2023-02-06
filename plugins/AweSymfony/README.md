@@ -1,20 +1,21 @@
 AweBash Plugin AweDocker - Amplified cd command
 ===============================================
-
-Installation
-------------
-
-installation can be achieved with or without **git** on your computer.
-
-with **git**:
- - Clone the plugin project inside /plugins of AweBash installation folder
-
-without **git**:
- - Download the AweBash plugin
- - Create a folder with the plugin name in /plugins of AweBash installation folder
- - Decompress AweBash plugin within the folder
  
 Plugin Content
 --------------
 
-Some usefull command for symfony developement
+- Some useful aliases for symfony development commands.
+- Remove politic from composer (No more "StandWith" messages)
+
+Plugin usage
+------------
+
+- `console` : Execute symfony console
+- `composer` : Execute composer
+- `phpunit` : Execute phpunit
+- `phpunit-coverage` : Execute phpunit with coverage
+
+Optional:
+---------
+
+If SymfonyCLI is installed, AweSymfony will automatically use `symfony` to invoke `php`, `composer` and `phpunit` commands.

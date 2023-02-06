@@ -1,30 +1,23 @@
 AweBash Plugin AweCD - Amplified cd command
 ===========================================
 
-Install AweBash here : https://github.com/MrSmith777/AweBash
-
-Installation
-------------
-
-installation can be achieved with or without **git** on your computer.
-
-with **git**:
- - Clone the plugin project inside /plugins of AweBash installation folder
-
-without **git**:
- - Download the AweBash plugin
- - Create a folder with the plugin name in /plugins of AweBash installation folder
- - Decompress AweBash plugin within the folder
-
 Plugin Content
 --------------
 
-Amplified cd command with shortcut.
+Amplified `cd` command with aliases capability.
 
-To add a short cut for the current folder:
+Plugin usage
+------------
 
-    cd -s shortcut_name
+To add an alias for the current folder:
+
+    cd -s alias_name
     
-Use a shortcut:
+When using cd command, AweCD will first try to match a folder, if not found, it will try to find an alias.
 
-    cd shortcut_name
+    cd alias_name
+
+Optional:
+---------
+
+If NVM is installed, AweCD will try to find a .nvmrc file in the current folder and use it to switch to the correct node version.

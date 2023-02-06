@@ -33,7 +33,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 #Les indispensables
-alias o="nemo . 2>/dev/null"
+alias o="nautilus . 2>/dev/null"
 alias c='clear'
 alias r='reset'
 alias t='time'
@@ -48,19 +48,18 @@ alias mkdir='mkdir -p'
 alias h='history'
 
 # sudo
-alias apt-get='sudo apt-get'
+alias apt='sudo apt'
 alias aptitude='sudo aptitude'
 
 # Clean update
 function ap()
 {
-    apt-get -y update &&
-    apt-get -y upgrade &&
-    apt-get -y dist-upgrade &&
-    apt-get -y autoclean &&
-    apt-get -y clean &&
-    apt-get -y autoremove
-    debclean
+    apt -y update &&
+    apt -y upgrade &&
+    apt -y dist-upgrade &&
+    apt -y autoclean &&
+    apt -y clean &&
+    apt -y autoremove
 }
 
 ##############################################################
@@ -79,6 +78,16 @@ function source()
     fi
 }
 
+function sudo()
+{
+    command="$@"
+    if [ -z "$command" ]; then
+        command sudo -s
+    else
+        command sudo "$@"
+    fi
+}
+
 # lecture colorée de logs
 logview()
 {
@@ -91,15 +100,7 @@ logtail()
     tail -f $1 | ccze
 }
 
-function sudo()
-{
-    command="$@"
-    if [ -z "$command" ]; then
-        command sudo -s
-    else
-        command sudo "$@"
-    fi
-}
+
 
 # git survey
 function git_contrib_total()
