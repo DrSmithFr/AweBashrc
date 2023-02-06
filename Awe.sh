@@ -117,6 +117,18 @@ done
 
 if awe_debug; then echo -e " Ultimate BashRc ${On_Green}${BRed}FULLY LOADED${NC}\n"; fi
 
+if awe_debug
+then
+  if ! command -v nvm &> /dev/null
+  then
+      echo -e "${BYellow}NVM is not installed, AweCD will ignore .nvm files.${NC}"
+  fi
+  if ! command -v symfony &> /dev/null
+  then
+      echo -e "${BYellow}Symfony CLI is not installed, AweSymfony will ignore .php-version files.${NC}"
+  fi
+fi
+
 # restoring previous PWD
 if [[ "$(pwd)" == "$(realpath ~)" ]]
 then
