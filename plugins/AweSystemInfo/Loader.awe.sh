@@ -69,11 +69,11 @@ function load()
 function load_color()
 {
     local SYSLOAD=$(load)
-    if [ ${SYSLOAD} -gt ${XLOAD} ]; then
+    if [ ${SYSLOAD} -gt 100 ]; then
         echo -en ${ALERT}
-    elif [ ${SYSLOAD} -gt ${MLOAD} ]; then
+    elif [ ${SYSLOAD} -gt 400 ]; then
         echo -en ${Red}
-    elif [ ${SYSLOAD} -gt ${SLOAD} ]; then
+    elif [ ${SYSLOAD} -gt 800 ]; then
         echo -en ${BRed}
     else
         echo -en ${Green}

@@ -1,5 +1,5 @@
-AweBash Plugin AweDocker - Amplified cd command
-===============================================
+AweBash Plugin AweDocker
+========================
  
 Plugin Content
 --------------

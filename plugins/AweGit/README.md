@@ -1,5 +1,5 @@
-AweBash Plugin AweGit - Amplified cd command
-============================================
+AweBash Plugin AweGit
+=====================
  
 Plugin Alias
 ------------
@@ -25,6 +25,9 @@ Plugin Alias
 
 Plugin content
 --------------
+Show git contribution for the current user.
+- `git_contrib` : Show git contribution for all user for repository
+- `git_contrib_since 2020-12-30` : Show git contribution for all user for repository since given date
 
 Adding a git history of branches to ease time tracking.
 - `git branch|checkout -h|--history` : Show git history of branches switch (compare with current time/date)

@@ -1,7 +1,7 @@
 AweBash Plugin AweSystemInfo
 ============================
  
-Plugin Content
+Plugin Aliases
 --------------
 
 - `my_ip_public` : Get your public IP address
@@ -10,3 +10,9 @@ Plugin Content
 - `load_color` : Return the current load of the system in percentage
 - `info_start` : Display some system informations
 - `ii` : Display even more informations
+
+Plugin Content
+--------------
+
+- `path` : Pretty-print of PATH variable
+- `libpath` : Display some LD_LIBRARY_PATH variable

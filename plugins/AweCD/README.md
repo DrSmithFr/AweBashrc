@@ -1,5 +1,5 @@
-AweBash Plugin AweCD - Amplified cd command
-===========================================
+AweBash Plugin AweCD
+====================
 
 Plugin Content
 --------------

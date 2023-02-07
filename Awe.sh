@@ -132,5 +132,5 @@ fi
 # restoring previous PWD
 if [[ "$(pwd)" == "$(realpath ~)" ]]
 then
-    cd -r
+    cd --restore
 fi

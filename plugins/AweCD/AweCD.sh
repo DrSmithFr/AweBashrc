@@ -1,4 +1,51 @@
 #!/usr/bin/env bash
+function awecd_help() {
+cat <<EOF
+cd: cd [-L|[-P [-e]] [-@]] [dir]
+Change the shell working directory.
+
+Change the current directory to DIR.  The default DIR is the value of the
+HOME shell variable.
+
+The variable CDPATH defines the search path for the directory containing
+DIR.  Alternative directory names in CDPATH are separated by a colon (:).
+A null directory name is the same as the current directory.  If DIR begins
+with a slash (/), then CDPATH is not used.
+
+If the directory is not found, and the shell option `cdable_vars' is set,
+the word is assumed to be  a variable name.  If that variable has a value,
+its value is used for DIR.
+
+Options:
+  -L        force symbolic links to be followed: resolve symbolic
+            links in DIR after processing instances of `..'
+  -P        use the physical directory structure without following
+            symbolic links: resolve symbolic links in DIR before
+            processing instances of `..'
+  -e        if the -P option is supplied, and the current working
+            directory cannot be determined successfully, exit with
+            a non-zero status
+  -@        on systems that support it, present a file with extended
+            attributes as a directory containing the file attributes
+
+The default is to follow symbolic links, as if `-L' were specified.
+`..' is processed by removing the immediately previous pathname component
+back to a slash or the beginning of DIR.
+
+Exit Status:
+Returns 0 if the directory is changed, and if $PWD is set successfully when
+-P is used; non-zero otherwise.
+
+Options added by AweCD:
+  --last|-      go to the last directory you were in
+  --restore     restore the last directory in usage
+  --save|-s     save passed argument as alias name to the current directory
+  --list|-l     list all aliases with there directories
+  --remove|-r   show version
+EOF
+}
+
+
 cdwrapper() {
     # Auto select cd or cdnvm if nvm is installed
     if ! command -v nvm &> /dev/null; then
@@ -70,7 +117,12 @@ function bash_save_last_pwd()
 {
     if [[ -f "$AWE_EXT_AWECD/.lastdir" ]]
     then
-        rm -f "$AWE_EXT_AWECD/.lastdir"
+        if [[ -f "$AWE_EXT_AWECD/.previousdir" ]]
+        then
+            rm -f "$AWE_EXT_AWECD/.previousdir"
+        fi
+
+        mv "$AWE_EXT_AWECD/.lastdir" "$AWE_EXT_AWECD/.previousdir"
     fi
 
     pwd > "$AWE_EXT_AWECD/.lastdir"
@@ -82,7 +134,16 @@ function bash_save_last_pwd()
 opt=$1
 shift
 case $opt in
-    --restore|-r)
+    --last|-)
+        if [[ -f "$AWE_EXT_AWECD/.previousdir" ]]
+        then
+            cdwrapper "$(cat "$AWE_EXT_AWECD/.previousdir")"
+            bash_save_last_pwd
+        else
+            echo "No previous directory found"
+        fi
+    ;;
+    --restore)
             lastdir="$(cat $AWE_EXT_AWECD/.lastdir)">/dev/null 2>&1
             if [ -d "$lastdir" ]; then
                 cdwrapper "$lastdir"
@@ -94,29 +155,35 @@ case $opt in
     --save|-s)
         if [ -z "$1" ]
         then
-            echo "Usage: rd [Nom_du_favoris]"
+            echo "Usage: cd [alias_name]"
         else
-            pwd > "$AWE_EXT_AWECD/.lastdir_$1"
+            pwd > "$AWE_EXT_AWECD/.alias_$1"
             echo "Saved '$1' as cd alias to '$(pwd)'"
         fi
     ;;
-    --load|-lo)
-        if [ -f "$AWE_EXT_AWECD/.lastdir_$1" ]
-        then
-            lastdir="$(cat $AWE_EXT_AWECD/.lastdir_$opt)">/dev/null 2>&1
-            if [ -d "$lastdir" ]; then
-                cdwrapper "$lastdir"
-                export PWD=$(pwd);
-                bash_save_last_pwd
+    --list|-l)
+        echo "Liste des alias de cd :"
+        for file in $AWE_EXT_AWECD/.alias_*
+        do
+            if [[ -d "$(cat $file)" ]]
+            then
+                echo -e "\e[0;34m$(basename $file | sed 's/.alias_//g')\e[m : $(cat $file)"
             else
-                echo -e "bash: AweCD: $1: Aucun alias de ce type"
+                echo -e "\e[0;41m$(basename $file | sed 's/.alias_//g')\e[m : $(cat $file) \e[0;31m(directory not found)\e[m"
             fi
-        else
-            echo -e "bash: AweCD: $1: Aucun alias de ce type"
-            exit 1
-        fi
+        done
     ;;
-    --help) command cd --help ;;
+    --remove|-r)
+      if [ -f "$AWE_EXT_AWECD/.alias_$1" ]
+      then
+          rm -f "$AWE_EXT_AWECD/.alias_$1"
+          echo -e "bash: AweCD: $1: alias removed"
+      else
+          echo -e "bash: AweCD: $1: alias not found"
+          exit 1
+      fi
+    ;;
+    --help|-h) awecd_help ;;
     *)
         if [ -z "$opt" ]
         then
@@ -130,19 +197,19 @@ case $opt in
                 export PWD=$(pwd);
                 bash_save_last_pwd
             else
-                if [ -f "$AWE_EXT_AWECD/.lastdir_$opt" ]
+                if [ -f "$AWE_EXT_AWECD/.alias_$opt" ]
                 then
-                    lastdir="$(cat $AWE_EXT_AWECD/.lastdir_$opt)">/dev/null 2>&1
-                    if [ -d "$lastdir" ]; then
-                        echo -e "Using AweCD alias '$opt' to '$lastdir'"
-                        cdwrapper "$lastdir" && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
+                    alias="$(cat $AWE_EXT_AWECD/.alias_$opt)">/dev/null 2>&1
+                    if [ -d "$alias" ]; then
+                        echo -e "Using AweCD alias '$opt' to '$alias'"
+                        cdwrapper "$alias" && ls -h --color -lv --group-directories-first | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print $0}'
                         export PWD=$(pwd);
                         bash_save_last_pwd
                     else
-                        echo "bash: cd: $opt: Aucun fichier, dossier ou alias de ce type"
+                        echo "bash: cd: $opt: no such directory or alias"
                     fi
                 else
-                    echo "bash: cd: $opt: Aucun fichier, dossier ou alias de ce type"
+                    echo "bash: cd: $opt: no such directory or alias"
                 fi
             fi
         fi
