@@ -8,14 +8,12 @@ Amplified `cd` command with aliases capability.
 
 Plugin usage
 ------------
-
-To add an alias for the current folder:
-
-    cd -s alias_name
-    
-When using cd command, AweCD will first try to match a folder, if not found, it will try to find an alias.
-
-    cd alias_name
+- `cd <filename|alias>` - Will first try to find a directory with the given name, if not found will try to find an alias with the given name.
+- `cd --restore` : restore the last working directory (useful after console restart)
+- `cd --last` or `cd -` : restore the last directory in usage
+- `cd --save|-s <alias_name>` : create an alias for the current directory
+- `cd --remove|-r <alias_name>` - remove an alias
+- `cd --list|-l` : list all aliases with their directories
 
 Optional:
 ---------

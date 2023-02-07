@@ -41,7 +41,7 @@ Options added by AweCD:
   --restore     restore the last directory in usage
   --save|-s     save passed argument as alias name to the current directory
   --list|-l     list all aliases with there directories
-  --remove|-r   show version
+  --remove|-r   remove passed alias name
 EOF
 }
 
