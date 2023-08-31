@@ -1,5 +1,7 @@
 # Docker
 export DOCKER_HOST=''
+
+alias d="docker"
 alias di="docker-init"
 alias dc="docker compose"
 
