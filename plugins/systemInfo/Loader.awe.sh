@@ -112,3 +112,12 @@ function job_color()
         echo -en ${BCyan}
     fi
 }
+
+# Audio alert
+alias say='spd-say'
+alias say-my-name='"I. am. Delta Romeo Charlie. 7. 55. unit. 36"'
+
+function aa()
+{
+    $@ && spd-say "Task succeeded!" || spd-say "Error. Task failed."
+}
