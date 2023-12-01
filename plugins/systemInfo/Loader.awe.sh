@@ -115,7 +115,7 @@ function job_color()
 
 # Audio alert
 alias say='spd-say'
-alias say-my-name='"I. am. Delta Romeo Charlie. 7. 55. unit. 36"'
+alias say-my-name='spd-say "I. am. Delta Romeo Charlie. 7. 55. unit. 36"'
 
 function aa()
 {
