@@ -38,7 +38,7 @@ fi
 
 # Update .bashrc
 mv ~/.bashrc ~/.bashrc.bak
-grep -vwE ". /home/john/Programmes/AweBash/Awe.sh" ~/.bashrc.bak > ~/.bashrc
+grep -vwE ". $AWE_INSTALL_FOLDER/Awe.sh" ~/.bashrc.bak > ~/.bashrc
 echo ". $AWE_INSTALL_FOLDER/Awe.sh" >> ~/.bashrc
 echo -e "Updating your .bashrs ${BGreen}OK${NC}"
 
@@ -46,3 +46,6 @@ echo -e "Updating your .bashrs ${BGreen}OK${NC}"
 export AWE_DEBUG="TRUE"
 . "$AWE_INSTALL_FOLDER/Awe.sh"
 export AWE_DEBUG=""
+
+# lunch prompt config
+./prompt.config.sh
