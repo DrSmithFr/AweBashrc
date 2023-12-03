@@ -119,9 +119,3 @@ then
       echo -e "${BYellow}Symfony CLI is not installed, AweSymfony will ignore .php-version files.${NC}"
   fi
 fi
-
-# restoring previous PWD
-if [[ "$(pwd)" == "$(realpath ~)" ]]
-then
-    cd --restore
-fi
