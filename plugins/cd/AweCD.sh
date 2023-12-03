@@ -144,13 +144,21 @@ case $opt in
         fi
     ;;
     --restore)
-            lastdir="$(cat $AWE_EXT_AWECD/.lastdir)">/dev/null 2>&1
-            if [ -d "$lastdir" ]; then
-                cdwrapper "$lastdir"
-                export PWD=$(pwd);
-            else
-                echo -e "bash: cd: nothing to restore"
-            fi
+        if [[ -f "$AWE_EXT_AWECD/.lastdir" ]]
+        then
+          lastdir="$(cat $AWE_EXT_AWECD/.lastdir)">/dev/null 2>&1
+          if [ -d "$lastdir" ]; then
+              cdwrapper "$lastdir"
+              export PWD=$(pwd);
+          else
+              echo -e "bash: cd: nothing to restore"
+          fi
+        else
+            echo "$HOME" > "$AWE_EXT_AWECD/.lastdir"
+            echo "$HOME" > "$AWE_EXT_AWECD/.previousdir"
+            cdwrapper "$HOME"
+            export PWD=$(pwd);
+        fi
     ;;
     --save|-s)
         if [ -z "$1" ]
