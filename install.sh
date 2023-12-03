@@ -2,18 +2,52 @@
 
 export AWE_INSTALL_FOLDER="$( command cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# update system
+sudo apt -y update &&
+sudo apt -y upgrade &&
+sudo apt -y dist-upgrade &&
+sudo apt -y autoclean &&
+sudo apt -y clean &&
+sudo apt -y autoremove
+
 # install dependencies
-sudo apt update
 sudo apt install -y curl wget htop speech-dispatcher
 
+# enforce ssh agent
+if [ ! -f ~/.ssh/id_rsa ]
+then
+    ssh-keygen -t rsa -b 4096 -C "AweBashrc" -f ~/.ssh/id_rsa -q -N ""
+    echo -e "ssh key ${BGreen}generated${NC}"
+else
+    echo -e "ssh key ${BGreen}already generated${NC}"
+fi
+
 # install ctop (htop for containers)
-if ! command -v ctop &> /dev/null
+if [ ! -f /usr/local/bin/ctop ]
 then
     sudo wget https://github.com/bcicen/ctop/releases/download/v0.7.7/ctop-0.7.7-linux-amd64 -O /usr/local/bin/ctop
     sudo chmod +x /usr/local/bin/ctop
     echo -e "ctop ${BGreen}installed${NC}"
 else
     echo -e "ctop ${BGreen}already installed${NC}"
+fi
+
+# Install git completion
+if [ ! -f ~/.git-completion ]
+then
+    wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -O ~/.git-completion
+    echo -e "git completion ${BGreen}installed${NC}"
+else
+    echo -e "git completion ${BGreen}already installed${NC}"
+fi
+
+# Install git prompt
+if [ ! -f ~/.git-prompt ]
+then
+    wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh -O ~/.git-prompt
+    echo -e "git prompt ${BGreen}installed${NC}"
+else
+    echo -e "git prompt ${BGreen}already installed${NC}"
 fi
 
 # install nvm

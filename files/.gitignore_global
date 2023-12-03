@@ -1,0 +1,14 @@
+# IDE files
+.idea
+
+phpunit.phar
+.php-version
+.nvmrc
+.phpcs-cache
+
+.dump
+.dumps
+
+.call
+.calls
+.run

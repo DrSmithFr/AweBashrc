@@ -24,6 +24,16 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+# git completion
+if [ -f ~/.git-completion ]; then
+    . ~/.git-completion
+fi
+
+# git prompt
+if [ -f ~/.git-prompt ]; then
+    . ~/.git-prompt
+fi
+
 # allow alias in within sudo command
 alias sudo='sudo '
 
