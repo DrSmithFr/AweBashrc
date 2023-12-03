@@ -24,27 +24,8 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
-
 # allow alias in within sudo command
 alias sudo='sudo '
-
-ulimit -S -c 0      # Don't want coredumps.
-set -o notify
-set -o noclobber
-set -o ignoreeof
-
-# 'Universal' completion function
-COMP_WORDBREAKS=${COMP_WORDBREAKS/=/}
 
 NCPU=$(grep -c 'processor' /proc/cpuinfo)   # Number of CPUs
 SLOAD=$(( 100*${NCPU} ))                    # Small load
