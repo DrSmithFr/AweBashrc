@@ -50,6 +50,24 @@ else
     echo -e "git prompt ${BGreen}already installed${NC}"
 fi
 
+# Install gitconfig
+if [ ! -f ~/.gitconfig ]
+then
+    mv "$AWE_INSTALL_FOLDER/files/.gitconfig" ~/.gitconfig
+    echo -e "gitconfig ${BGreen}installed${NC}"
+else
+    echo -e "gitconfig ${BGreen}already installed${NC}"
+fi
+
+# install gitignore_global
+if [ ! -f ~/.gitignore_global ]
+then
+    mv "$AWE_INSTALL_FOLDER/files/.gitignore_global" ~/.gitignore_global
+    echo -e "gitignore_global ${BGreen}installed${NC}"
+else
+    echo -e "gitignore_global ${BGreen}already installed${NC}"
+fi
+
 # install nvm
 if ! command -v nvm &> /dev/null
 then
